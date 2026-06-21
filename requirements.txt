@@ -25,6 +25,3 @@ scikit-image
 imageio==2.37.0
 tqdm==4.67.3
 PyYAML==6.0.3
-
-# -- DeepBump (AO/Height/Displacement) ONNX 추론
-onnxruntime==1.27.0
