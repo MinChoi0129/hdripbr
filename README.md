@@ -1,12 +1,11 @@
 # hdripbr — 텍스트 → 360° HDRI + PBR
 
-## 설치 (한 번)
+## 설치
 
 ```bash
 git clone https://github.com/MinChoi0129/hdripbr.git && cd hdripbr
-bash install.sh
-conda activate dit360 && huggingface-cli login   # FLUX.1-dev 동의 후 토큰
 ```
+이후 [install.md](install.md) 의 명령을 순서대로 붙여넣으세요.
 
 ## 모드 1 — 문자열 1개
 

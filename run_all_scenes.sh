@@ -6,6 +6,8 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 
 # ===== 여기 편집: "이름|프롬프트" =====
 items=(
+"sunny_plaza|A sunny European plaza at noon, cobblestone ground, stone fountain, clear blue sky."
+"cozy_library|A cozy wooden library, leather armchairs, brass lamps, tall bookshelves, warm light."
 "cyberpunk|A cyberpunk city at night, neon reflections on wet streets."
 "snow_village|A snowy mountain village at sunset, smoke from chimneys."
 "ruined_temple|An ancient ruined temple overgrown with vines in a jungle."
