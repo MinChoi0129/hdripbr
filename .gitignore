@@ -1,0 +1,21 @@
+# 외부 repo (install.sh/setup.sh 가 clone+패치)
+/DiT360/
+/ExpandNet/
+/OmniX/
+/third_party/
+
+# 산출물 / 구버전 / 로그
+/outputs_v2/
+/legacy/
+/logs/
+/outputs/
+
+# 파이썬 캐시
+__pycache__/
+*.pyc
+*.pyo
+
+# 잡파일
+*.exr
+.DS_Store
+/tmp/
