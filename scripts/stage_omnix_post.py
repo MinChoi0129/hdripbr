@@ -8,21 +8,23 @@ from PIL import Image
 od = sys.argv[1]
 W = int(sys.argv[2]) if len(sys.argv) > 2 else 4096
 H = int(sys.argv[3]) if len(sys.argv) > 3 else 2048
-mapping = {
-    "output_albedo.png": "pbr_basecolor.png",
-    "output_roughness.png": "pbr_roughness.png",
-    "output_normal.png": "pbr_normal_omnix.png",
-}
-for src, dst in mapping.items():
+# (src, dst, mode) — roughness 는 grayscale(L), 나머지는 RGB. semantic 은 NEAREST 업샘플.
+mapping = [
+    ("output_albedo.png",   "pbr_basecolor.png",    "RGB"),
+    ("output_roughness.png", "pbr_roughness.png",   "L"),     # 단일채널(Linear 값)
+    ("output_normal.png",   "pbr_normal_omnix.png", "RGB"),
+    ("output_semantic.png", "pbr_semantic.png",     "RGB"),   # 하늘/물 마스크용 (Fix1)
+]
+for src, dst, mode in mapping:
     p = os.path.join(od, src)
     if not os.path.exists(p):
         print(f"  [warn] missing {src}"); continue
-    im = Image.open(p)
+    im = Image.open(p).convert(mode)
     if im.size != (W, H):
-        im = im.resize((W, H), Image.LANCZOS)
+        im = im.resize((W, H), Image.NEAREST if "semantic" in dst else Image.LANCZOS)
     im.save(os.path.join(od, dst))
-    print(f"  {src} -> {dst} ({W}x{H})")
-# OmniX 보조파일 제거
+    print(f"  {src} -> {dst} ({W}x{H}, {mode})")
+# OmniX 보조파일 제거 (semantic 은 보존)
 for f in ("output_albedo.png", "output_normal.png", "output_roughness.png",
           "output_metallic.png", "output_depth.png", "output_semantic.png",
           "output_stitched.png", "input_panorama.png"):

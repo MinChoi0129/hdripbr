@@ -222,7 +222,15 @@ def create_images(opt):
             )
             cv2.imwrite(out_name, (ldr_input * 255).astype(int))
 
-        t_input = cv2torch(ldr_input)
+        # equirectangular seam 제거: 좌우 wrap-pad -> 추론 -> 중앙 crop
+        # (좌끝/우끝 열이 같은 컨텍스트를 보도록 해 봉합선 색 불연속을 없앤다)
+        Wimg = ldr_input.shape[1]
+        wrap = min(opt.patch_size, Wimg // 4)
+        ldr_proc = np.concatenate(
+            [ldr_input[:, -wrap:], ldr_input, ldr_input[:, :wrap]], axis=1
+        )
+
+        t_input = cv2torch(ldr_proc)
         if opt.use_gpu:
             net.cuda()
             t_input = t_input.cuda()
@@ -230,7 +238,9 @@ def create_images(opt):
             torch2cv(net.predict(t_input, opt.patch_size).cpu()), 0, 1
         )
         # 진짜 HDR 확장 (sigmoid로 [0,1]에 갇힌 출력을 광원 영역에서 1.0 위로 확장)
-        prediction = expand_to_hdr(prediction, ldr_input)
+        prediction = expand_to_hdr(prediction, ldr_proc)
+        # 패딩 영역 제거 -> 원본 폭 복원 (이제 양 끝열이 연속)
+        prediction = prediction[:, wrap:wrap + Wimg]
 
         extension = 'exr' if opt.use_exr else 'hdr'
         out_name = create_name(

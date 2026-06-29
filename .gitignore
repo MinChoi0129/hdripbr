@@ -1,14 +1,12 @@
-# 외부 repo (install.sh/setup.sh 가 clone+패치)
-/DiT360/
-/ExpandNet/
-/OmniX/
-/third_party/
+# 외부 모델 repo (install.md 가 models/ 안으로 clone+패치 — patches/ 에 패치 원본 보존)
+/models/DiT360/
+/models/ExpandNet/
+/models/OmniX/
 
-# 산출물 / 구버전 / 로그
-/outputs_v2/
-/legacy/
-/logs/
+# 산출물 / 로컬 아카이브 / 로그 (서버 종속, 커밋 제외)
 /outputs/
+/.archive/
+/logs/
 
 # 파이썬 캐시
 __pycache__/

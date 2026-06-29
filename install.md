@@ -2,16 +2,19 @@
 
 아래 명령을 위에서부터 순서대로 붙여넣으세요. (리포 폴더 `hdripbr/` 안에서 실행)
 
-## 1. 외부 repo clone + 패치
+## 1. 외부 repo clone + 패치 (models/ 안으로)
 
 ```bash
-git clone https://github.com/Insta360-Research-Team/DiT360.git
-git clone https://github.com/dmarnerides/hdr-expandnet.git ExpandNet
-git clone https://github.com/HKU-MMLab/OmniX.git
-cp patches/DiT360/inference.py        DiT360/inference.py
-cp patches/ExpandNet/expand.py        ExpandNet/expand.py
-cp patches/OmniX/src/systems/omnix.py OmniX/src/systems/omnix.py
+git clone https://github.com/Insta360-Research-Team/DiT360.git models/DiT360
+git clone https://github.com/dmarnerides/hdr-expandnet.git      models/ExpandNet
+git clone https://github.com/HKU-MMLab/OmniX.git                models/OmniX
+cp patches/DiT360/inference.py            models/DiT360/inference.py
+cp patches/ExpandNet/expand.py            models/ExpandNet/expand.py
+cp patches/OmniX/src/systems/omnix.py     models/OmniX/src/systems/omnix.py
+cp patches/OmniX/scripts/regen_semantic.py models/OmniX/scripts/regen_semantic.py   # semantic 재생성 유틸(선택)
 ```
+
+> 코드는 `models/DiT360`, `models/ExpandNet`, `models/OmniX` 경로를 기대한다. 반드시 위처럼 `models/` 안으로 clone.
 
 ## 2. conda 환경 — dit360 (생성 / HDR / OmniX / derived)
 
