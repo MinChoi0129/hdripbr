@@ -24,7 +24,9 @@ def generate(prompt, work):
     """모델 생성 파이프라인. work=임시 평면폴더.
     DiT360(LDR) -> ExpandNet(HDR) -> OmniX(basecolor/roughness/normal_omnix/semantic)
     -> Marigold(metallic/normal_marigold/depth) -> derived(ao/height/displacement)
-    -> 하늘/물 채움(semantic-fix) -> seam offset-feather."""
+    -> 하늘/물 채움(semantic-fix) -> seam offset-feather.
+    basecolor 는 두 벌 유지: pbr_basecolor(원본 = 순수 OmniX albedo)
+    + pbr_basecolor_with_semantic(하늘/물 채움·물리보정; 검증·material·UE 가 사용)."""
     os.makedirs(work, exist_ok=True)
     pano = os.path.join(work, "panorama.png")
     sh([PY, "inference.py", f"This is a panorama. {prompt}", pano], cwd=f"{ROOT}/models/DiT360")
@@ -38,8 +40,9 @@ def generate(prompt, work):
     sh([PY, f"{HERE}/stage_omnix_post.py", work, "4096", "2048"])
     sh([PY_MAT, f"{HERE}/stage_marigold_final.py", pano, work, "--res", "2048", "--ensemble", "8", "--steps", "4"])
     sh([PY, f"{HERE}/stage_pbr_derive.py", work, pano])
-    sh([PY, f"{HERE}/stage_semantic_fix.py", work, pano])    # 하늘/구름/물 검정 albedo 채움(basecolor)
-    seamfix.fix_pbr_dir(work)                                 # 채널 seam offset-feather
+    # 원본 pbr_basecolor(순수 OmniX)는 유지, 하늘/물 채움본을 pbr_basecolor_with_semantic 로 별도 저장
+    sh([PY, f"{HERE}/stage_semantic_fix.py", work, pano])
+    seamfix.fix_pbr_dir(work)                                 # 채널 seam offset-feather(두 basecolor 포함)
     return work
 
 
@@ -56,7 +59,8 @@ def assemble(work, out_dir):
     for s in ("hdri_preview_p50_mid.png", "hdri_preview_p95_high.png", "hdri_preview_p99_peak.png"):
         cp(s, hf, s)
     cp("panorama.png", out_dir, "panorama.png")
-    pbr_map = {"pbr_basecolor.png": "pbr_basecolor.png",
+    pbr_map = {"pbr_basecolor.png": "pbr_basecolor.png",                # 원본(순수 OmniX albedo)
+               "pbr_basecolor_with_semantic.png": "pbr_basecolor_with_semantic.png",  # 하늘/물 채움·물리보정
                "pbr_normal_marigold.png": "pbr_normal.png",         # 납품 normal = Marigold tangent
                "pbr_normal_omnix.png": "pbr_normal_omnix.png",      # 참고 (world-space)
                "pbr_roughness.png": "pbr_roughness.png", "pbr_metallic.png": "pbr_metallic.png",

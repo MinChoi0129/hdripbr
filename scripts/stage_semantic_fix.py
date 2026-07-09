@@ -68,8 +68,9 @@ def albedo_ceiling(arr, hi=245.0):
 
 
 def run(out_dir, panorama_path):
-    """하늘/구름/물의 검정 albedo 를 파노라마 콘텐츠(약간 탈채도)로 채우고,
-       순백 highlight 를 물리 albedo 상한으로 압축한다.
+    """원본 albedo(pbr_basecolor.png, 순수 OmniX)는 그대로 두고,
+       하늘/구름/물의 검정을 채우고 순백 highlight 를 물리 상한으로 압축한 결과를
+       pbr_basecolor_with_semantic.png 로 별도 저장한다(원본 보존, 두 벌 유지).
        다른 채널(normal/metallic/roughness)은 건드리지 않는다."""
     base = _load(out_dir, "pbr_basecolor.png", rgb=True)
     if base is None:
@@ -94,10 +95,10 @@ def run(out_dir, panorama_path):
     # 순백 highlight 압축(물리 albedo 상한): white<5%
     out = albedo_ceiling(out, hi=245.0)
     Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).save(
-        os.path.join(out_dir, "pbr_basecolor.png"))
+        os.path.join(out_dir, "pbr_basecolor_with_semantic.png"))    # 원본 유지, 처리본 별도 저장
 
     src = "semantic+prior" if semantic is not None else "prior-only"
-    print(f"  하늘/구름/물 채움({src}): sky={sky.mean()*100:.0f}% water={water.mean()*100:.0f}%")
+    print(f"  하늘/구름/물 채움({src}) -> with_semantic: sky={sky.mean()*100:.0f}% water={water.mean()*100:.0f}%")
     return True
 
 if __name__ == "__main__":

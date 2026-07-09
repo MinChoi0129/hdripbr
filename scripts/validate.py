@@ -21,7 +21,8 @@ OK, NO = "O", "X"
 PATHS = {
     "exr": ["hdri/final/hdri_final.exr", "hdri.exr"],
     "hdri_preview": ["hdri/final/hdri_preview.png", "hdri_preview.png"],
-    "basecolor": ["pbr/final/pbr_basecolor.png", "pbr_basecolor.png"],
+    "basecolor": ["pbr/final/pbr_basecolor_with_semantic.png", "pbr_basecolor_with_semantic.png",
+                  "pbr/final/pbr_basecolor.png", "pbr_basecolor.png"],
     "normal": ["pbr/final/pbr_normal.png", "pbr_normal.png", "pbr_normal_omnix.png"],
     "roughness": ["pbr/final/pbr_roughness.png", "pbr_roughness.png"],
     "metallic": ["pbr/final/pbr_metallic.png", "pbr_metallic.png"],

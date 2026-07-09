@@ -7,7 +7,7 @@
 archive flat(pristine 모델 출력)에서 채널을 복원한 뒤 후처리만 다시 적용하므로 idempotent 하다.
   1. archive 원본 채널 복원 (basecolor/metallic/roughness/depth/normal_omnix/normal_marigold/ao/height/displacement)
   2. 납품 normal = Marigold (pbr_normal.png); 폐기된 pbr_normal_depth.png 정리
-  3. 하늘/구름/물 검정 albedo 채움 (BaseColor 만)
+  3. 하늘/구름/물 검정 albedo 채움 -> pbr_basecolor_with_semantic.png (원본 pbr_basecolor 유지)
   4. 채널 seam offset-feather (비블러)
   5. material_id + manifest 재생성
   6. 재검증 (O/X)
@@ -56,7 +56,7 @@ def fix_one(out_dir):
     if os.path.exists(dn):
         os.remove(dn)
 
-    # 3. 하늘/구름/물 검정 albedo 채움 (basecolor 만)
+    # 3. 하늘/구름/물 검정 albedo 채움 -> pbr_basecolor_with_semantic.png (원본 pbr_basecolor 는 유지)
     pano = os.path.join(out_dir, "panorama.png")
     if not os.path.exists(pano) and arch:
         pano = os.path.join(arch, "panorama.png")

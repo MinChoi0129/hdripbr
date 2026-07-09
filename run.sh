@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# HDRIPBR 실행 스크립트 (기준서 파이프라인: 입력 -> 생성 -> 검증 O/X)
+
 # 사용:
 #   ./run.sh                                   # inputs/text/*.txt 전체 실행 + 총괄 검증
 #   ./run.sh inputs/text/01_sunny_plaza.txt    # 단일 입력

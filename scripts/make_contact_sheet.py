@@ -18,10 +18,11 @@ PAD = 6
 TILES = [
     ("panorama.png", "Panorama (LDR)"),
     ("hdri/final/hdri_preview.png", "HDRI (preview)"),
-    ("hdri/final/hdri_preview_p99_peak.png", "HDRI p99 (광원)"),
+    ("hdri/final/hdri_preview_p99_peak.png", "HDRI p99 (light)"),
     ("pbr/final/pbr_basecolor.png", "BaseColor"),
-    ("pbr/final/pbr_normal.png", "Normal (납품=Marigold)"),
-    ("pbr/final/pbr_normal_omnix.png", "Normal (OmniX 참고)"),
+    ("pbr/final/pbr_basecolor_with_semantic.png", "BaseColor (with semantic)"),
+    ("pbr/final/pbr_normal.png", "Normal (delivered=Marigold)"),
+    ("pbr/final/pbr_normal_omnix.png", "Normal (OmniX ref)"),
     ("pbr/final/pbr_roughness.png", "Roughness"),
     ("pbr/final/pbr_metallic.png", "Metallic"),
     ("pbr/final/pbr_ao.png", "AO"),
@@ -29,7 +30,7 @@ TILES = [
     ("pbr/final/pbr_displacement.png", "Displacement"),
     ("pbr/final/pbr_depth.png", "Depth"),
     ("pbr/final/pbr_material_id.png", "Material ID"),
-    ("pbr/final/pbr_semantic.png", "Semantic (하늘/물)"),
+    ("pbr/final/pbr_semantic.png", "Semantic (sky/water)"),
 ]
 
 
@@ -59,7 +60,7 @@ def make(scene_dir):
     cw, ch = TW + PAD, TH + LAB + PAD
     sheet = Image.new("RGB", (COLS * cw + PAD, rows * ch + PAD + 26), (24, 24, 28))
     d = ImageDraw.Draw(sheet); font = _font()
-    d.text((PAD + 2, 5), f"{iid}  —  HDRI + PBR contact sheet", fill=(240, 240, 245), font=font)
+    d.text((PAD + 2, 5), f"{iid}  -  HDRI + PBR contact sheet", fill=(240, 240, 245), font=font)
     for i, (p, lab) in enumerate(present):
         r, c = divmod(i, COLS)
         x = PAD + c * cw; y = 26 + PAD + r * ch

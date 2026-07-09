@@ -13,8 +13,8 @@ import numpy as np
 os.environ.setdefault("OPENCV_IO_ENABLE_OPENEXR", "1")
 import cv2
 
-PBR_CHANNELS = ["pbr_basecolor.png", "pbr_roughness.png", "pbr_metallic.png",
-                "pbr_ao.png", "pbr_height.png", "pbr_displacement.png"]
+PBR_CHANNELS = ["pbr_basecolor.png", "pbr_basecolor_with_semantic.png", "pbr_roughness.png",
+                "pbr_metallic.png", "pbr_ao.png", "pbr_height.png", "pbr_displacement.png"]
 
 
 def _feather(a, Bn):

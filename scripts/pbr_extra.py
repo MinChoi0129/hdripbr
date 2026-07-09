@@ -20,7 +20,10 @@ def _name(beh):
 
 def make_material_id(od, k=6):
     g = lambda p: np.array(Image.open(os.path.join(od, p)).convert("L")).astype(np.float32)  # 단일채널 보장
-    albedo = np.array(Image.open(os.path.join(od, "pbr_basecolor.png")).convert("RGB")).astype(np.float32) / 255
+    _bc = "pbr_basecolor_with_semantic.png"                 # 물리보정본으로 세그먼트(원본 없으면 fallback)
+    if not os.path.exists(os.path.join(od, _bc)):
+        _bc = "pbr_basecolor.png"
+    albedo = np.array(Image.open(os.path.join(od, _bc)).convert("RGB")).astype(np.float32) / 255
     rough = g("pbr_roughness.png") / 255.0
     metal = g("pbr_metallic.png") / 255.0
     ao = g("pbr_ao.png") / 255.0
@@ -54,7 +57,7 @@ def make_engine(material_dir, iid, res="4096x2048"):
         "material_name": f"M_HDRI_PBR_{iid}", "uv_type": "equirectangular_2_to_1",
         "texture_resolution": res, "normal_space": "OpenGL",
         "textures": {"hdri": "../hdri/final/hdri_final.exr",
-                     "basecolor": "../pbr/final/pbr_basecolor.png", "normal": "../pbr/final/pbr_normal.png",
+                     "basecolor": "../pbr/final/pbr_basecolor_with_semantic.png", "normal": "../pbr/final/pbr_normal.png",
                      "roughness": "../pbr/final/pbr_roughness.png", "metallic": "../pbr/final/pbr_metallic.png",
                      "ao": "../pbr/final/pbr_ao.png", "height": "../pbr/final/pbr_height.png",
                      "displacement": "../pbr/final/pbr_displacement.png", "material_id": "../pbr/final/pbr_material_id.png"},
