@@ -40,6 +40,8 @@ conda deactivate
 
 4. Hugging Face 로그인 (FLUX.1-dev 라이선스 동의 후)
 
+먼저 https://huggingface.co/black-forest-labs/FLUX.1-dev 에서 동의:
+
 ```
 conda activate dit360
 huggingface-cli login
